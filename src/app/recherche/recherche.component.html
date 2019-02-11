@@ -1,0 +1,8 @@
+<label>Recherche</label>
+<input [(ngModel)]="nomPays">
+<button (click)="onClick()" [disabled]="nomPays==''" >Chercher</button>
+<div *ngFor = "let p of listePays">
+    <div *ngIf = "p.name.toLowerCase().includes(nomPays.toLowerCase())">
+        {{p.name}}
+    </div>
+</div> 
