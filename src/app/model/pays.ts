@@ -1,3 +1,5 @@
+import { Devise } from './devise';
+
 export class Pays {
     name : string;
     topLevelDomain : string [];
@@ -17,7 +19,7 @@ export class Pays {
     borders : string[];
     nativeName : string;
     numericCode : string;
-    currencies : string [];
+    currencies : Devise [];
     languages : string [];
     translations : string [];
     flag : string;

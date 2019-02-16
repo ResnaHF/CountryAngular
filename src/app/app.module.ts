@@ -12,6 +12,7 @@ import { RechercheComponent } from './recherche/recherche.component';
 import { DetailComponent } from './detail/detail.component';
 import { CritereComponent } from './critere/critere.component';
 import { ApercuComponent } from './apercu/apercu.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ApercuComponent } from './apercu/apercu.component';
     RechercheComponent,
     DetailComponent,
     CritereComponent,
-    ApercuComponent
+    ApercuComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

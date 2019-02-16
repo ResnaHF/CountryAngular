@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute,Router,NavigationEnd } from '@angular/router';
 
 import { Param } from '../model/param';
 import { Pays } from '../model/pays';
 import { Critere } from '../model/critere';
 import { Attribut } from '../model/attribut';
+import { Devise } from '../model/devise';
 import { ComapiService } from '../comapi.service';
 
 @Component({
@@ -18,13 +20,21 @@ export class RechercheComponent implements OnInit {
   listePaysSelectionne : Pays[] = [];
   listeCritere : Critere[];
 
-  constructor(private comapi : ComapiService) { }
+  constructor(private comapi : ComapiService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.listeCritere = this.cloneCritere(Param.listeStandard);
+    var _this = this;
+    this.selectCritere();
     this.comapi.getListPays().subscribe(d => {
       this.listePays = d;
+      console.log(d);
       this.reloadList();
+    });
+    this.router.events.subscribe( val => {
+      if(val instanceof NavigationEnd) {
+        this.selectCritere();
+        this.reloadList();
+      }
     });
   }
   
@@ -79,6 +89,17 @@ export class RechercheComponent implements OnInit {
                   fail = true;
                 }
                 break;
+              case "DEVISE[]":
+                var listeDevise : Devise[] = pays[crit.attribut.attribut];
+                var oneGood = false;
+                listeDevise.forEach(devise => {
+                  if(devise.code != null && devise.code.toLowerCase().includes(crit.valeur.toLowerCase()))
+                    oneGood = true;
+                });
+                if (!oneGood){
+                  fail = true;
+                }
+                break;
             }
           }
         }
@@ -97,8 +118,6 @@ export class RechercheComponent implements OnInit {
         })
       }
     }
-    
-    console.log("nombre de resultat " + this.listePaysSelectionne.length);
   }
   
   addCrit(num : number){
@@ -128,5 +147,29 @@ export class RechercheComponent implements OnInit {
       result.push({"operateur":crit.operateur, "attribut":crit.attribut, "valeur":crit.valeur, "min":0, "max":Number.MAX_VALUE, "num":crit.num})
     });
     return result;
+  }
+  
+  selectCritere(){
+    var type : string = this.route.snapshot.paramMap.get('type');
+    switch(type){
+      case "EUROPE":
+        this.listeCritere = this.cloneCritere(Param.listeEurope);
+        break;
+      case "AFRIQUE":
+        this.listeCritere = this.cloneCritere(Param.listeAfrique);
+        break;
+      case "CAD":
+        this.listeCritere = this.cloneCritere(Param.listeCAD);
+        break;
+      case "USD":
+        this.listeCritere = this.cloneCritere(Param.listeUSD);
+        break;
+      case "EURO":
+        this.listeCritere = this.cloneCritere(Param.listeEURO);
+        break;
+      default :
+        this.listeCritere = this.cloneCritere(Param.listeStandard);
+        break;
+    }
   }
 }
