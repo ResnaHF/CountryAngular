@@ -1,9 +1,13 @@
 
-<select [(ngModel)]="crit.operateur" (ngModelChange)="onBlur()">
+<select *ngIf="crit.num != 1" [(ngModel)]="crit.operateur" (ngModelChange)="onBlur()">
     <option *ngFor = "let x of listeOperateur" value="{{x}}">{{x}}</option>
 </select>
-<label>Critère {{crit.num}} </label>
-<label>{{crit.attribu}} </label>
-<input [(ngModel)]="crit.valeur" (ngModelChange)="onBlur()"/>
+<label> {{crit.num}} </label>
+<select [(ngModel)]="type" (ngModelChange)="onBlurAttribut()">
+    <option *ngFor = "let att of listeAttribut" value="{{att.attribut}}">{{att.nomAttribut}}</option>
+</select>
+<input *ngIf = "crit.attribut.type == 'STRING'" [(ngModel)]="crit.valeur" (ngModelChange)="onBlur()"/>
+<input *ngIf = "crit.attribut.type == 'NUMBER'" type="number" [(ngModel)]="crit.min" (ngModelChange)="onBlur()"/>
+<input *ngIf = "crit.attribut.type == 'NUMBER'" type="number" [(ngModel)]="crit.max" (ngModelChange)="onBlur()"/>
 <button (click)="addCrit()">AddCrit</button>
 <button (click)="supCrit()" *ngIf="crit.num > 1">SupCrit</button>

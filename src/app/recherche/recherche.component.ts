@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Param } from '../model/param';
 import { Pays } from '../model/pays';
-import { ComapiService } from '../comapi.service';
 import { Critere } from '../model/critere';
+import { Attribut } from '../model/attribut';
+import { ComapiService } from '../comapi.service';
 
 @Component({
   selector: 'app-recherche',
@@ -13,18 +15,17 @@ export class RechercheComponent implements OnInit {
 
   nomPays : String = "";
   listePays : Pays[];
-  listePaysSelectionne : Pays[];
+  listePaysSelectionne : Pays[] = [];
   listeCritere : Critere[];
 
   constructor(private comapi : ComapiService) { }
 
   ngOnInit() {
-    this.listeCritere = this.cloneCritere(Critere.listeStandard);
+    this.listeCritere = this.cloneCritere(Param.listeStandard);
     this.comapi.getListPays().subscribe(d => {
       this.listePays = d;
       this.reloadList();
     });
-    
   }
   
   fromCritere(event : String){
@@ -65,8 +66,19 @@ export class RechercheComponent implements OnInit {
           }
           
           if(!good && !fail){
-            if(!pays[crit.attribu].toLowerCase().includes(crit.valeur.toLowerCase())){
-              fail = true;
+            switch(crit.attribut.type){
+              case "STRING":
+                if(!pays[crit.attribut.attribut].toLowerCase().includes(crit.valeur.toLowerCase())){
+                  fail = true;
+                }
+              case "NUMBER":
+                if(pays[crit.attribut.attribut] <= crit.min){
+                  fail = true;
+                }
+                if(crit.max > 0 && pays[crit.attribut.attribut] >= crit.max ){
+                  fail = true;
+                }
+                break;
             }
           }
         }
@@ -74,6 +86,19 @@ export class RechercheComponent implements OnInit {
       if(!fail || good)
         _this.listePaysSelectionne.push(pays);
     });
+    
+    for (let i = 0; i < Param.listeAttribut.length; i++) {
+      if(Param.listeAttribut[i].selected != 'DEFAUT'){
+        Param.listeAttribut[i].selected = 'NON';
+        this.listeCritere.forEach(crit => {
+          if(crit.attribut.attribut == Param.listeAttribut[i].attribut){
+            Param.listeAttribut[i].selected = 'OUI';
+          }
+        })
+      }
+    }
+    
+    console.log("nombre de resultat " + this.listePaysSelectionne.length);
   }
   
   addCrit(num : number){
@@ -83,7 +108,7 @@ export class RechercheComponent implements OnInit {
       }
       return c;
     });
-    var newCrit = {"operateur":"ET", "attribu":"name", "valeur":"", "num":num+1}
+    var newCrit = {"operateur":"ET", "attribut":Param.getAttribut("name"), "valeur":"", "min":0, "max":Number.MAX_VALUE, "num":num+1}
     this.listeCritere.splice(num, 0, newCrit);
   }
   
@@ -100,7 +125,7 @@ export class RechercheComponent implements OnInit {
   cloneCritere(liste : Critere[]) : Critere[] {
     var result = [];
     liste.forEach(crit =>{
-      result.push({"operateur":crit.operateur, "attribu":crit.attribu, "valeur":crit.valeur, "num":crit.num})
+      result.push({"operateur":crit.operateur, "attribut":crit.attribut, "valeur":crit.valeur, "min":0, "max":Number.MAX_VALUE, "num":crit.num})
     });
     return result;
   }

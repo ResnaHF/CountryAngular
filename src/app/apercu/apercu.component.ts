@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Pays } from '../model/pays'
+import { Pays } from '../model/pays';
+import { Param } from '../model/param';
+import { Attribut } from '../model/attribut';
 
 @Component({
   selector: 'app-apercu',
@@ -9,10 +11,12 @@ import { Pays } from '../model/pays'
 export class ApercuComponent implements OnInit {
 
   @Input () pays : Pays;
+  listeAttribut : Attribut[];
 
   constructor() { }
 
   ngOnInit() {
+    this.listeAttribut = Param.listeAttribut;
   }
 
 }

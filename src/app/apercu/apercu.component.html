@@ -1,1 +1,6 @@
-{{pays.name}}
+<span *ngFor = "let att of listeAttribut">
+    <span *ngIf = "att.selected == 'DEFAUT' || att.selected == 'OUI'">
+        {{att.nomAttribut + ' : ' + pays[att.attribut]}}
+    </span>
+</span>
+<!--{{pays.name}}-->

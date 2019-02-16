@@ -1,6 +1,9 @@
 <div *ngFor = "let c of listeCritere">
     <app-critere [crit]="c" (someEvent)="fromCritere($event)"></app-critere>
 </div>
+<div></div>
+<div>Nombre de résultat {{listePaysSelectionne.length}}</div>
+<div></div>
 <div *ngFor = "let p of listePaysSelectionne" >
     <app-apercu [pays]="p"></app-apercu>
-</div> 
+</div>
