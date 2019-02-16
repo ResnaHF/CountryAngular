@@ -19,43 +19,41 @@ export class RechercheComponent implements OnInit {
   constructor(private comapi : ComapiService) { }
 
   ngOnInit() {
+    this.listeCritere = this.cloneCritere(Critere.listeStandard);
     this.comapi.getListPays().subscribe(d => {
       this.listePays = d;
-      this.listePaysSelectionne = d;
+      this.reloadList();
     });
     
-    this.listeCritere = [];
-    var var1 = new Critere();
-    var1.operateur = "ET";
-    var1.attribu = "name";
-    var1.valeur="";
-    this.listeCritere.push(var1);
-    
-    var var2 = new Critere();
-    var2.operateur = "OU";
-    var2.attribu = "name";
-    var2.valeur="";
-    this.listeCritere.push(var2);
-    
-    
-    
-    console.log(this.listeCritere);
   }
   
-  onClick () {
-    
-    
+  fromCritere(event : String){
+    var tab = event.split(";");
+    switch(tab[0]){
+      case "reload" : 
+        this.reloadList();
+        break;
+      case "addCrit":
+        this.addCrit(parseInt(tab[1]));
+        break;
+      case "supCrit":
+        this.supCrit(parseInt(tab[1]));
+        break;
+      default :
+        console.log(event);
+    }
   }
   
-  onBlur() {
-    console.log('test');
+  reloadList() {
+    //on vide la liste
     this.listePaysSelectionne = [];
-    
     var _this = this;
+    
+    //pour chaque pays de la liste principal
     this.listePays.forEach(function (pays) {
       var good : Boolean = false;
       var fail : Boolean = false;
-      _this.listeCritere.forEach(function(crit){
+      _this.listeCritere.forEach(crit => {
         if(!good){
           
           if(crit.operateur == "OU"){
@@ -77,5 +75,33 @@ export class RechercheComponent implements OnInit {
         _this.listePaysSelectionne.push(pays);
     });
   }
-
+  
+  addCrit(num : number){
+    this.listeCritere = this.listeCritere.map(c =>{
+      if(c.num > num){
+        c.num++;
+      }
+      return c;
+    });
+    var newCrit = {"operateur":"ET", "attribu":"name", "valeur":"", "num":num+1}
+    this.listeCritere.splice(num, 0, newCrit);
+  }
+  
+  supCrit(num : number){
+    this.listeCritere = this.listeCritere.map(c =>{
+      if(c.num > num){
+        c.num--;
+      }
+      return c;
+    })
+    this.listeCritere.splice(num-1, 1);
+  }
+  
+  cloneCritere(liste : Critere[]) : Critere[] {
+    var result = [];
+    liste.forEach(crit =>{
+      result.push({"operateur":crit.operateur, "attribu":crit.attribu, "valeur":crit.valeur, "num":crit.num})
+    });
+    return result;
+  }
 }

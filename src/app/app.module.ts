@@ -10,13 +10,17 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { RechercheComponent } from './recherche/recherche.component';
 import { DetailComponent } from './detail/detail.component';
+import { CritereComponent } from './critere/critere.component';
+import { ApercuComponent } from './apercu/apercu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     RechercheComponent,
-    DetailComponent
+    DetailComponent,
+    CritereComponent,
+    ApercuComponent
   ],
   imports: [
     BrowserModule,
