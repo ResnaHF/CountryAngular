@@ -1,11 +1,20 @@
-<div *ngFor = "let c of listeCritere">
-    <app-critere [crit]="c" (someEvent)="fromCritere($event)"></app-critere>
-</div>
+<ul class="list-group list-unstyled">
+    <li class="list-group-item btn-light" *ngFor = "let c of listeCritere">
+        <app-critere [crit]="c" (someEvent)="fromCritere($event)"></app-critere>
+    </li>
+</ul>
 <div></div>
 <div *ngIf = "listePaysSelectionne.length > 0">Nombre de résultat {{listePaysSelectionne.length}}</div>
 <div></div>
-<div *ngFor = "let p of listePaysSelectionne" >
-    <a [routerLink]="['/detail',p.name]">
-        <app-apercu [pays]="p"></app-apercu>
-    </a>
+<div class="table-responsive" *ngIf = "listePaysSelectionne.length > 0">
+    <table class="table" >
+        <app-entete></app-entete>
+        <tbody>
+            <tr *ngFor = "let p of listePaysSelectionne" >
+                <a [routerLink]="['/detail',p.name]">
+                    <app-apercu [pays]="p"></app-apercu>
+                </a>
+            </tr>
+        </tbody>
+    </table>
 </div>

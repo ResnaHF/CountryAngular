@@ -11,12 +11,12 @@ import { Attribut } from '../model/attribut';
 export class ApercuComponent implements OnInit {
 
   @Input () pays : Pays;
-  listeAttribut : Attribut[];
+  listeAttributSelectionne : Attribut[];
 
   constructor() { }
 
   ngOnInit() {
-    this.listeAttribut = Param.listeAttribut;
+    this.listeAttributSelectionne = Param.listeAttributSelectionne;
   }
 
 }

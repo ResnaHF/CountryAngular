@@ -2,12 +2,17 @@
 <select *ngIf="crit.num != 1" [(ngModel)]="crit.operateur" (ngModelChange)="onBlur()">
     <option *ngFor = "let x of listeOperateur" value="{{x}}">{{x}}</option>
 </select>
-<label> {{crit.num}} </label>
 <select [(ngModel)]="type" (ngModelChange)="onBlurAttribut()">
     <option *ngFor = "let att of listeAttribut" value="{{att.attribut}}">{{att.nomAttribut}}</option>
 </select>
+
+<span *ngIf = "!crit.attribut.type.startsWith('NUMBER')"> contenant </span>
 <input *ngIf = "!crit.attribut.type.startsWith('NUMBER')" [(ngModel)]="crit.valeur" (ngModelChange)="onBlur()"/>
+
+<span *ngIf = "crit.attribut.type.startsWith('NUMBER')"> contenu entre </span>
 <input *ngIf = "crit.attribut.type.startsWith('NUMBER')" type="number" [(ngModel)]="crit.min" (ngModelChange)="onBlur()"/>
+<span *ngIf = "crit.attribut.type.startsWith('NUMBER')"> et </span>
 <input *ngIf = "crit.attribut.type.startsWith('NUMBER')" type="number" [(ngModel)]="crit.max" (ngModelChange)="onBlur()"/>
-<button (click)="addCrit()">AddCrit</button>
-<button (click)="supCrit()" *ngIf="crit.num > 1">SupCrit</button>
+
+<img src="assets/images/plus.svg" (click)="addCrit()">
+<img src="assets/images/minus.svg" (click)="supCrit()" *ngIf="crit.num > 1">

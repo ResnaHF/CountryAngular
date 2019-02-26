@@ -23,11 +23,9 @@ export class RechercheComponent implements OnInit {
   constructor(private comapi : ComapiService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    var _this = this;
     this.selectCritere();
     this.comapi.getListPays().subscribe(d => {
       this.listePays = d;
-      console.log(d);
       this.reloadList();
     });
     this.router.events.subscribe( val => {
@@ -118,6 +116,14 @@ export class RechercheComponent implements OnInit {
         })
       }
     }
+    
+    //vidage de la liste 
+    Param.listeAttributSelectionne.length = 0;
+    Param.listeAttribut.forEach(att => {
+      if(att.selected != 'NON'){
+        Param.listeAttributSelectionne.push(att);
+      }
+    });
   }
   
   addCrit(num : number){

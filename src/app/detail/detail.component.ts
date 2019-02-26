@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute,Router,NavigationEnd } from '@angular/router';
+
+import { Pays } from '../model/pays';
+import { ComapiService } from '../comapi.service';
 
 @Component({
   selector: 'app-detail',
@@ -8,12 +11,31 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DetailComponent implements OnInit {
 
-  name : string = "";
+  pays : Pays = new Pays();
+  paysFrontaliers : string[];
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private comapi : ComapiService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.name = this.route.snapshot.paramMap.get('name');
+    this.recupDonnePays();
+    this.router.events.subscribe( val => {
+      if(val instanceof NavigationEnd) {
+        this.recupDonnePays();
+      }
+    });
   }
   
+  recupDonnePays(){
+    var _this = this;
+    this.comapi.getPays(this.route.snapshot.paramMap.get('name')).subscribe(p => {
+      this.pays = p[0];
+      console.log(this.pays);
+      this.paysFrontaliers = []; 
+      this.pays.borders.forEach(str =>{
+        this.comapi.getPaysAlpha3(str).subscribe(p => {
+          _this.paysFrontaliers.push(p.name);
+        });
+      });
+    });
+  }
 }

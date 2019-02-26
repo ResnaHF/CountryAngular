@@ -42,6 +42,7 @@ export class CritereComponent implements OnInit {
   
   supCrit(){
     this.someEvent.next('supCrit;' + this.crit.num);
+    this.onBlur();
   }
 
 }

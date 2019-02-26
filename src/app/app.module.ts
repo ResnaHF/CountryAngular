@@ -13,6 +13,7 @@ import { DetailComponent } from './detail/detail.component';
 import { CritereComponent } from './critere/critere.component';
 import { ApercuComponent } from './apercu/apercu.component';
 import { MenuComponent } from './menu/menu.component';
+import { EnteteComponent } from './entete/entete.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MenuComponent } from './menu/menu.component';
     DetailComponent,
     CritereComponent,
     ApercuComponent,
-    MenuComponent
+    MenuComponent,
+    EnteteComponent
   ],
   imports: [
     BrowserModule,

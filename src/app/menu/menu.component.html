@@ -1,6 +1,25 @@
-<a [routerLink]="['/recherche']">defaut </a>
-<a [routerLink]="['/recherche','EUROPE']">europe </a>
-<a [routerLink]="['/recherche','AFRIQUE']">afrique </a>
-<a [routerLink]="['/recherche','CAD']">CAD </a>
-<a [routerLink]="['/recherche','USD']">USD </a>
-<a [routerLink]="['/recherche','EURO']">EURO </a>
+<ul class="list-group list-unstyled">
+    <a [routerLink]="['/recherche']">
+        <li class="list-group-item btn-light">Acceuil</li>
+    </a>
+    
+    <a [routerLink]="['/recherche','EUROPE']">
+        <li class="list-group-item btn-light">Pays europeens</li>
+    </a> 
+    
+    <a [routerLink]="['/recherche','AFRIQUE']">
+        <li class="list-group-item btn-light">Pays africains</li>
+    </a> 
+    
+    <a [routerLink]="['/recherche','CAD']">
+        <li class="list-group-item btn-light">Pays utilisant le dollar canadien</li>
+    </a>
+    
+    <a [routerLink]="['/recherche','USD']">
+        <li class="list-group-item btn-light">Pays utilisant le dollar américain</li>
+    </a> 
+    
+    <a [routerLink]="['/recherche','EURO']">
+        <li class="list-group-item btn-light">Pays utilisant l'euro</li>
+    </a> 
+</ul>

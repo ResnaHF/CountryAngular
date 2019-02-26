@@ -1,22 +1,19 @@
-<span *ngFor = "let att of listeAttribut">
-    <span *ngIf = "att.selected == 'DEFAUT' || att.selected == 'OUI'">
-        {{att.nomAttribut + ' : ' }}
-        <span *ngIf = "!att.type.endsWith('\[\]')">
-           {{pays[att.attribut]}}
-        </span>
-        <span *ngIf = "att.type.endsWith('\[\]')">
-            <span [ngSwitch]="true">
-                <span *ngSwitchCase="att.type.startsWith('DEVISE')">
-                    <span *ngFor ="let row of pays[att.attribut]">
-                        {{' ' + row.code + '( ' + row.name + ' ) '}}
-                    </span>
+<td *ngFor = "let att of listeAttributSelectionne">
+    <span *ngIf = "!att.type.endsWith('\[\]')">
+    {{pays[att.attribut]}}
+    </span>
+    <span *ngIf = "att.type.endsWith('\[\]')">
+        <span [ngSwitch]="true">
+            <span *ngSwitchCase="att.type.startsWith('DEVISE')">
+                <span *ngFor ="let row of pays[att.attribut]">
+                {{' ' + row.code + '( ' + row.name + ' ) '}}
                 </span>
-                <span *ngSwitchDefault>
-                    <span *ngFor ="let row of pays[att.attribut]">
-                        {{' ' + row}}
-                    </span>
+            </span>
+            <span *ngSwitchDefault>
+                <span *ngFor ="let row of pays[att.attribut]">
+                {{' ' + row}}
                 </span>
             </span>
         </span>
     </span>
-</span>
+</td>
